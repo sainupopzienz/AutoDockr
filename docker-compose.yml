@@ -1,0 +1,55 @@
+# Docker Compose for AutoDockr
+# Production deployment configuration
+
+version: '3.8'
+
+services:
+  autodockr:
+    build: .
+    container_name: autodockr
+    ports:
+      - "8086:80"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    networks:
+      - autodockr-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    #labels:
+      #- "traefik.enable=true"
+      #- "traefik.http.routers.autodockr.rule=Host(`autodockr.localhost`)"
+      #- "traefik.http.services.autodockr.loadbalancer.server.port=80"
+
+        # Optional: Add Traefik for reverse proxy
+  #traefik:
+    #image: traefik:v2.10
+    #container_name: traefik
+    #command:
+      #- "--api.insecure=true"
+      #- "--providers.docker=true"
+      #- "--providers.docker.exposedbydefault=false"
+      #- "--entrypoints.web.address=:80"
+    #ports:
+      #- "8080:8080"  # Traefik dashboard
+      #- "8000:80"    # Main entry point
+    #volumes:
+      #- /var/run/docker.sock:/var/run/docker.sock:ro
+    #networks:
+      #- autodockr-network
+    #restart: unless-stopped
+
+networks:
+  autodockr-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  nginx_cache:
+    driver: local
