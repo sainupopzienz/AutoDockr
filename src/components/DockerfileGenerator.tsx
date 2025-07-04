@@ -52,7 +52,7 @@ const DockerfileGenerator: React.FC<DockerfileGeneratorProps> = ({ addToHistory 
     'react-nginx': {
       baseImage: 'node:18-alpine as build',
       workdir: '/app',
-      port: '80',
+      //port: '80',
       //startCommand: 'nginx -g "daemon off;"',
       buildCommands: ['npm install', 'npm run build'],
       copyCommands: [
