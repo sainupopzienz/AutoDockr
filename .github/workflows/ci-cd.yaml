@@ -3,13 +3,13 @@ name: Build and Push Docker Image
 on:
   push:
     branches:
-      - dev   # This triggers the workflow on pushes to 'dev' branch
+      - variablise   # This triggers the workflow on pushes to 'dev' branch
 
 jobs:
   build:     # Job name, you can name it as "build" or any other name
     runs-on: ubuntu-latest
     env:
-      IMAGE_TAG: v2
+      IMAGE_TAG: v3
     steps:
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
